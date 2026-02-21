@@ -1,0 +1,55 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  class="container"
+  style="display: flex; justify-content: center; margin-top: 50px"
+>
+  <div
+    class="stall-card"
+    style="max-width: 500px; padding: 40px; border-top: 5px solid #2ecc71"
+  >
+    <div style="font-size: 60px; color: #2ecc71; margin-bottom: 20px">✓</div>
+
+    <h2 style="color: #1a2a6c; margin-bottom: 10px">Order Confirmed!</h2>
+    <p style="font-size: 18px; color: #555">
+      Your pre-order has been successfully placed.
+    </p>
+
+    <div
+      style="
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 25px 0;
+        text-align: left;
+      "
+    >
+      <p><strong>Order ID:</strong> #{{ order_id }}</p>
+      <p>
+        <strong>Pickup Time Slot:</strong>
+        <span style="color: #b21f1f; font-weight: 600">{{ time_slot }}</span>
+      </p>
+      <p>
+        <strong>Status:</strong>
+        <span
+          style="
+            background: #f39c12;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+          "
+          >Pending</span
+        >
+      </p>
+    </div>
+
+    <p style="font-size: 14px; color: #777; margin-bottom: 25px">
+      Please show your Order ID at the stall to collect your food.
+    </p>
+
+    <a href="/" class="btn" style="width: 100%; box-sizing: border-box"
+      >Return to Home</a
+    >
+  </div>
+</div>
+{% endblock %}

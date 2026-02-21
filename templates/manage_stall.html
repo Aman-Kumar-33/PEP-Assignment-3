@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero" style="padding: 20px 0; text-align: left;">
+    <h2>Admin: {{ stall.stall_name }}</h2>
+    <p>Manage your live orders and menu items.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 20px;">
+    
+    <div class="stall-card" style="text-align: left;">
+        <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Live Orders</h3>
+        
+        {% if live_orders %}
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+                <tr style="background: #f8f9fa; text-align: left;">
+                    <th style="padding: 10px; border-bottom: 1px solid #ddd;">Order #</th>
+                    <th style="padding: 10px; border-bottom: 1px solid #ddd;">Student</th>
+                    <th style="padding: 10px; border-bottom: 1px solid #ddd;">Items</th>
+                    <th style="padding: 10px; border-bottom: 1px solid #ddd;">Time Slot</th>
+                    <th style="padding: 10px; border-bottom: 1px solid #ddd;">Action</th>
+                </tr>
+                {% for order in live_orders %}
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>#{{ order.id }}</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ order.student_name }}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">{{ order.order_summary }}</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee; color: #b21f1f;"><strong>{{ order.time_slot }}</strong></td>
+                    <td style="padding: 10px; border-bottom: 1px solid #eee;">
+                        
+                        <form action="/update_status" method="POST" style="display: flex; gap: 10px;">
+                            <input type="hidden" name="order_id" value="{{ order.id }}">
+                            <input type="hidden" name="stall_id" value="{{ stall.id }}">
+                            
+                            <select name="status" style="padding: 5px; border-radius: 5px;">
+                                <option value="Pending" {{ 'selected' if order.status == 'Pending' else '' }}>Pending</option>
+                                <option value="Received" {{ 'selected' if order.status == 'Received' else '' }}>Received</option>
+                                <option value="Preparing" {{ 'selected' if order.status == 'Preparing' else '' }}>Preparing</option>
+                                <option value="Prepared" {{ 'selected' if order.status == 'Prepared' else '' }}>Prepared</option>
+                                <option value="Ready for pickup" {{ 'selected' if order.status == 'Ready for pickup' else '' }}>Ready for pickup</option>
+                                <option value="Completed">Completed (Remove)</option>
+                            </select>
+                            
+                            <button type="submit" style="background: #2ecc71; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Update</button>
+                        </form>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p style="color: #777; margin-top: 15px;">No active orders at the moment.</p>
+        {% endif %}
+    </div>
+
+    <div class="stall-card" style="text-align: left; height: fit-content;">
+        <h3 style="border-bottom: 2px solid #eee; padding-bottom: 10px;">Add Menu Item</h3>
+        
+        <form action="/add_menu_item" method="POST" style="margin-top: 15px;">
+            <input type="hidden" name="stall_id" value="{{ stall.id }}">
+            
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Item Name</label>
+            <input type="text" name="item_name" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Price (₹)</label>
+            <input type="number" name="price" step="0.01" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;">
+            
+            <button type="submit" class="btn" style="width: 100%; box-sizing: border-box;">+ Add to Menu</button>
+        </form>
+
+        <h4 style="margin-top: 30px;">Current Menu</h4>
+        <ul style="list-style-type: none; padding: 0;">
+            {% for item in menu_items %}
+                <li style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f8f9fa;">
+                    <span>{{ item.item_name }}</span>
+                    <strong>₹{{ item.price }}</strong>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+{% endblock %}

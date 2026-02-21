@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% block content %}
+<a href="/" class="btn" style="background: #95a5a6; margin-bottom: 20px"
+  >&larr; Back to Stalls</a
+>
+
+<div class="hero" style="padding: 20px 0">
+  <h2>{{ stall.stall_name }}</h2>
+  <p>Owner: {{ stall.owner_name }}</p>
+</div>
+
+<form action="/place_order" method="POST">
+  <input type="hidden" name="stall_id" value="{{ stall.id }}" />
+
+  <div class="stall-grid">
+    {% for item in items %}
+    <div class="stall-card">
+      <h3>{{ item.item_name }}</h3>
+      <p class="price">₹{{ item.price }}</p>
+
+      <label>Quantity:</label>
+      <input
+        type="number"
+        name="item_{{ item.id }}"
+        min="0"
+        value="0"
+        class="qty-input"
+      />
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="checkout-section">
+    <h3>Ready to Pre-Order?</h3>
+    <p>Select your break time to reduce crowd congestion.</p>
+
+    <div style="margin-bottom: 20px">
+      <label for="time_slot"><strong>Break Time Slot:</strong></label
+      ><br />
+      <select name="time_slot" id="time_slot" class="time-select" required>
+        <option value="">-- Choose a slot --</option>
+        <option value="10:00 AM - 10:15 AM">
+          10:00 AM - 10:15 AM (Morning Break)
+        </option>
+        <option value="12:30 PM - 1:30 PM">
+          12:30 PM - 1:30 PM (Lunch Break)
+        </option>
+        <option value="3:00 PM - 3:15 PM">
+          3:00 PM - 3:15 PM (Evening Break)
+        </option>
+      </select>
+    </div>
+
+    <input type="hidden" name="user_id" value="1" />
+
+    <button type="submit" class="btn checkout-btn">Place Pre-Order</button>
+  </div>
+</form>
+{% endblock %}

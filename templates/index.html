@@ -1,0 +1,40 @@
+{% extends 'base.html' %} {% block content %}
+<div class="hero">
+  <h2>What are you craving?</h2>
+  <p>Skip the line. Pre-order your campus favorites now.</p>
+
+  <div class="search-container">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search for stalls... (e.g., Chai, Spicy)"
+    />
+  </div>
+</div>
+
+<div class="stall-grid" id="stallGrid">
+  {% for stall in stalls %}
+  <div class="stall-card">
+    <h3>{{ stall.stall_name }}</h3>
+    <p>Owner: {{ stall.owner_name }}</p>
+    <a href="/menu/{{ stall.id }}" class="btn">View Menu</a>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    let cards = document.querySelectorAll(".stall-card");
+
+    cards.forEach((card) => {
+      let text = card.innerText.toLowerCase();
+      if (text.includes(filter)) {
+        card.style.display = "";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+</script>
+{% endblock %}

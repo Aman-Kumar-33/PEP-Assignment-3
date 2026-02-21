@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="hero" style="padding: 20px 0">
+  <h2>📊 Campus Peak Times</h2>
+  <p>Track demand to help reduce crowd congestion at the food stalls.</p>
+</div>
+
+<div class="stall-card" style="max-width: 800px; margin: 0 auto; padding: 40px">
+  <canvas id="peakChart"></canvas>
+</div>
+
+<script>
+  const rawData = JSON.parse("{{ peak_data | tojson | safe }}");
+
+  const labels = rawData.map((row) => row.time_slot);
+  const data = rawData.map((row) => row.order_count);
+
+  const ctx = document.getElementById("peakChart").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Total Orders per Time Slot",
+          data: data,
+          backgroundColor: "rgba(52, 152, 219, 0.6)",
+          borderColor: "rgba(52, 152, 219, 1)",
+          borderWidth: 2,
+          borderRadius: 5,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1,
+          },
+          title: {
+            display: true,
+            text: "Number of Orders",
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            text: "Break Time Slots",
+          },
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+        },
+      },
+    },
+  });
+</script>
+{% endblock %}
