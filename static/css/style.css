@@ -217,3 +217,30 @@ body {
   background: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
 }
+/* --- Status Badges --- */
+.status-badge {
+  padding: 8px 15px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.bg-pending {
+  background-color: #95a5a6;
+}
+.bg-received {
+  background-color: #3498db;
+}
+.bg-preparing {
+  background-color: #f39c12;
+}
+.bg-prepared {
+  background-color: #e67e22;
+}
+.bg-ready {
+  background-color: #2ecc71;
+}
+.bg-completed {
+  background-color: #2c3e50;
+}

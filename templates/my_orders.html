@@ -1,0 +1,69 @@
+{% extends 'base.html' %} {% block content %}
+<div class="hero" style="padding: 20px 0">
+  <h2>📦 My Orders</h2>
+  <p>Track your food status in real-time.</p>
+</div>
+
+<div class="container" style="max-width: 800px">
+  {% if orders %} {% for order in orders %}
+  <div class="stall-card" style="text-align: left; margin-bottom: 20px">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      "
+    >
+      <h3 style="margin: 0; color: #1a2a6c">
+        Order #{{ order.id }} - {{ order.stall_name }}
+      </h3>
+      <span style="font-weight: bold; color: #b21f1f"
+        >Pickup: {{ order.time_slot }}</span
+      >
+    </div>
+
+    <p style="font-size: 16px; color: #555">
+      <strong>Items:</strong> {{ order.items }}
+    </p>
+
+    {% set status_class = 'bg-pending' %} {% if order.status == 'Received' %} {%
+    set status_class = 'bg-received' %} {% elif order.status == 'Preparing' %}
+    {% set status_class = 'bg-preparing' %} {% elif order.status == 'Prepared'
+    %} {% set status_class = 'bg-prepared' %} {% elif order.status == 'Ready for
+    pickup' %} {% set status_class = 'bg-ready' %} {% elif order.status ==
+    'Completed' %} {% set status_class = 'bg-completed' %} {% endif %}
+
+    <div
+      style="
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      "
+    >
+      <p style="margin: 0; font-weight: 600">Current Status:</p>
+
+      <span class="status-badge {{ status_class }}"> {{ order.status }} </span>
+    </div>
+  </div>
+  {% endfor %} {% else %}
+  <div class="stall-card" style="text-align: center; padding: 50px">
+    <p style="font-size: 18px; color: #777; margin-bottom: 20px">
+      You haven't placed any orders yet.
+    </p>
+    <a href="/" class="btn">Browse Food Stalls</a>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  setTimeout(function () {
+    window.location.reload();
+  }, 5000); // Reloads the page every 5 seconds
+</script>
+{% endblock %}
